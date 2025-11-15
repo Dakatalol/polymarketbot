@@ -130,7 +130,7 @@ class PolymarketMonitor:
     def get_new_activities(self, wallet_address: str) -> List[Dict]:
         """
         Fetch latest activity and return only new transactions.
-        Filters out REWARD type activities.
+        Filters out REWARD and YIELD type activities.
 
         Returns:
             List of new activities (empty list if none)
@@ -162,10 +162,10 @@ class PolymarketMonitor:
         if new_activities:
             self.store_activities(wallet_address, new_activities)
 
-        # Filter out REWARD type activities before returning
+        # Filter out REWARD and YIELD type activities before returning
         filtered_activities = [
             activity for activity in new_activities
-            if activity.get("type") != "REWARD"
+            if activity.get("type") not in ["REWARD", "YIELD"]
         ]
 
         # Return in chronological order (oldest first)
